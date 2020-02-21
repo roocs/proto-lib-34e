@@ -60,6 +60,7 @@ def translate_args(**kwargs):
         elif key == 'bbox':
             value = [float(_) for _ in value.split(',')]
 
+        print(key, '-->', value)
         translated[key] = value
 
     return translated

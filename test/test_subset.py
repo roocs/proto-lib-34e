@@ -1,6 +1,6 @@
 import wps_lib
 
-CMIP5_ID = 'cmip5.output1.MOHC.HadGEM2-ES.rcp45.mon.atmos.Amon.r1i1p1.v20111128.tas'
+CMIP5_ID = 'cmip5.output1.MOHC.HadGEM2-ES.rcp85.mon.atmos.Amon.r1i1p1.latest.tas'
 
 
 def test_subset_t():

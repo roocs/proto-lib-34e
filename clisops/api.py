@@ -1,3 +1,4 @@
+from .utils import map_args
 import xarray as xr
 
 
@@ -29,9 +30,15 @@ def general_subset(dset, time=None, space=None, level=None, output_type="netcdf"
     if isinstance(dset, str):
         dset = xr.open_dataset(dset)
 
-    result = dset.sel(time=slice(time[0], time[1]), latitude=slice(space[1], space[3]),
-                      longitude=slice(space[0], space[2]), level=slice(level[0], level[1]),
-                      output_type=output_type, chunk_rules=chunk_rules, filenamer=filenamer)
+    args = map_args(dset, time=time, space=space, level=level)
+
+    print(f'[INFO] Calling Xarray selector with: {args}')
+    result = dset.sel(**args)
+
+#time=slice(time[0], time[1]), latitude=slice(space[1], space[3]),
+#                      longitude=slice(space[0], space[2]), level=slice(level[0], level[1]),
+#                      output_type=output_type, chunk_rules=chunk_rules, filenamer=filenamer)
 
 ### What about output_dir, what gets returned???
+    result.to_netcdf('output1.nc') 
     return result

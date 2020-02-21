@@ -28,7 +28,7 @@ def subset(data_refs, time=None, space=None, level=None,
     :return:
     """
     # Consolidate data inputs so they can be passed to Xarray
-    data_refs = consolidate(data_refs)
+    data_refs = consolidate(data_refs, time=time)
     # Normalise (i.e. "fix") data inputs based on their "character"
     norm_dsets = normalise(data_refs)
 
