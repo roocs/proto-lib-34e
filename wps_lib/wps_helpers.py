@@ -1,7 +1,7 @@
 import os
 
 
-REQ_BASE_DIR = '/tmp/requests'
+REQ_BASE_DIR = 'outputs/requests'
 if not os.path.isdir(REQ_BASE_DIR):
     os.makedirs(REQ_BASE_DIR)
 
@@ -14,7 +14,7 @@ class WPSResponse(object):
         self._setup()
 
     def _setup(self):
-        self.urls = self.result.urls
+        self.urls = ['http://download?path=' + _ for _ in self.result.file_paths]
         self.metadata = self.result.metadata
 
     def repr(self):
@@ -55,9 +55,12 @@ def translate_args(**kwargs):
     translated = {}
 
     for key, value in kwargs.items():
-        if key == 'time':
+
+        if value in (None, ''):
+            continue 
+        elif key == 'time':
             value = value.split('/')
-        elif key == 'bbox':
+        elif key in ('space', 'level'):
             value = [float(_) for _ in value.split(',')]
 
         print(key, '-->', value)

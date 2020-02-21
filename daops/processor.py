@@ -13,12 +13,12 @@ def process(operation, dset, mode='serial', **kwargs):
         print(f'Running {op_name} [{mode}]: {dset} with args: {kwargs}')
 
         result = operation(dset, **kwargs)
-        try:
-            result = operation(dset, **kwargs)
-        except Exception as err:
-            raise Exception(f'Operation failed: {op_name} on {dset} with args: {kwargs}')
+#        try:
+#            result = operation(dset, **kwargs)
+#        except Exception as err:
+#            raise Exception(f'Operation failed: {op_name} on {dset} with args: {kwargs}')
     else:
         result = dispatch(operation, dset, **kwargs)
 
-    return
+    return result
 

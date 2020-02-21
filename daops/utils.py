@@ -52,7 +52,7 @@ def _consolidate_data_ref(dref):
 
 def consolidate(data_refs, **kwargs):
     data_refs = _wrap_sequence(data_refs)
-    filtered_refs = []
+    filtered_refs = collections.OrderedDict()
 
     for dref in data_refs:
 
@@ -61,8 +61,7 @@ def consolidate(data_refs, **kwargs):
         if 'time' in kwargs:
             required_years = set(range(*[int(_.split('-')[0]) for _ in kwargs['time']]))
 
-            print(f'[WARN] Looking at [3:5] files ONLY...')
-            file_paths = glob.glob(consolidated)[3:5]
+            file_paths = glob.glob(consolidated)
             print(f'[INFO] Testing {len(file_paths)} files in time range: ...')
             files_in_range = []
 
@@ -78,21 +77,32 @@ def consolidate(data_refs, **kwargs):
             print(f'[INFO] Kept {len(files_in_range)} files')
             consolidated = files_in_range[:]
 
-        filtered_refs.append(consolidated)
+        filtered_refs[dref] = consolidated
 
     return filtered_refs
 
 
 def normalise(data_refs):
     print(f'[INFO] Working on data refs: {data_refs}')
-    return [xr.open_mfdataset(data_ref) for data_ref in data_refs]
+    norm_dsets = collections.OrderedDict()
+
+    for data_ref, file_paths in data_refs.items():
+        xr_dset = xr.open_mfdataset(file_paths)
+        norm_dsets[data_ref] = xr_dset
+
+    return norm_dsets
 
 
 class ResultSet(object):
 
-    def __init__(self):
+
+    def __init__(self, inputs=None):
         self._results = collections.OrderedDict()
+        self.metadata = {'inputs': inputs, 'process': 'something', 'version': 0.1}
+        self.file_paths = []
 
     def add(self, data_ref, result):
         self._results[data_ref] = result
+        self.file_paths.append(result)
+
 

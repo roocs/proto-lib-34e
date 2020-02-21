@@ -1,10 +1,11 @@
-from .utils import map_args
+import os
 import xarray as xr
+
+from .utils import map_args
 
 
 def general_subset(dset, time=None, space=None, level=None, output_type="netcdf",
-                   output_dir=None, chunk_rules=None,
-                   filenamer="simple_namer"):
+                   output_dir=None, chunk_rules=None, filenamer="simple_namer"):
     """
     Example:
         dset: Xarray Dataset
@@ -30,15 +31,16 @@ def general_subset(dset, time=None, space=None, level=None, output_type="netcdf"
     if isinstance(dset, str):
         dset = xr.open_dataset(dset)
 
+    print(f'[INFO] Before mapping args: {time}, {space}, {level}') 
     args = map_args(dset, time=time, space=space, level=level)
 
     print(f'[INFO] Calling Xarray selector with: {args}')
     result = dset.sel(**args)
 
-#time=slice(time[0], time[1]), latitude=slice(space[1], space[3]),
-#                      longitude=slice(space[0], space[2]), level=slice(level[0], level[1]),
-#                      output_type=output_type, chunk_rules=chunk_rules, filenamer=filenamer)
+    if output_type == 'netcdf':
+        output_path = os.path.join(output_dir, 'output.nc')
+        result.to_netcdf(output_path)
+        print(f'[INFO] Wrote output file: {output_path}')
+        return output_path
 
-### What about output_dir, what gets returned???
-    result.to_netcdf('output1.nc') 
     return result

@@ -4,7 +4,7 @@ import xarray as xr
 def get_coord_by_attr(dset, attr, value):
     coords = dset.coords
 
-    for coord in coords:
+    for coord in coords.values():
         if coord.attrs.get(attr, None) == value:
             return coord
 
@@ -39,10 +39,10 @@ def _get_xy(dset, space):
 
     xy = {}
 
-    if lat:
-        xy[lat.name] = [space[1], space[3]]
-    if lon:
-        xy[lon.name] = [space[0], space[2]]
+    if hasattr(lat, 'name'):
+        xy[lat.name] = slice(space[1], space[3])
+    if hasattr(lon, 'name'):
+        xy[lon.name] = slice(space[0], space[2])
 
     return xy 
 
@@ -52,12 +52,14 @@ def map_args(dset, **kwargs):
 
     for key, value in kwargs.items():
         
-        if key == 'space':
+        if value == None:
+            pass
+        elif key == 'space':
             args.update(_get_xy(dset, value))
         elif key == 'level':
             pass
         else:
-            args[key] = value
+            args[key] = slice(value[0], value[1])
 
     return args 
 
