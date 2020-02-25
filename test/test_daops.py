@@ -6,7 +6,7 @@
 # combine='by_coords'.
 
 
-# create class to test each function - has different testsdefined within it?
+# create class to test each function - has different tests defined within it?
 
 def test_subset_data_ref():
     """ Tests daops api.subset function with only a data ref"""
@@ -184,13 +184,13 @@ def test_normalise_character_no_problem():
 
 def test_ResultSet_init():
     """ Tests init function of ResultSet class in daops utils.
-        Checks the metadata."""
+        Checks the metadata is as expected."""
     pass
 
 
 def test_ResultSet_add():
     """ Tests add function of ResultSet class in daops utils.
-        Checks the file paths and _results."""
+        Checks the file paths and _results are expected."""
     pass
 
 
