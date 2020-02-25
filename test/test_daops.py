@@ -1,7 +1,5 @@
 """ Tests for daops library """
 
-from daops.utils import _consolidate_data_ref
-
 # FutureWarning: In xarray version 0.15 the default behaviour of `open_mfdataset`
 # will change. To retain the existing behavior, pass
 # combine='nested'. To use future default behavior, pass
@@ -178,7 +176,31 @@ def test_normalise_character_problem():  # create tests for different types of c
         """
     pass
 
+
 def test_normalise_character_no_problem():
     """ Tests daops utils.normalise for data with no problems"""
     pass
 
+
+def test_ResultSet_init():
+    """ Tests init function of ResultSet class in daops utils.
+        Checks the metadata."""
+    pass
+
+
+def test_ResultSet_add():
+    """ Tests add function of ResultSet class in daops utils.
+        Checks the file paths and _results."""
+    pass
+
+
+def test_dispatch():
+    """ Tests daops processor.dispatch.
+        """
+    pass
+
+
+def test_process():
+    """ Tests daops processor.process.
+            """
+    pass
