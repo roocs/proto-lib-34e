@@ -161,7 +161,7 @@ def test_consolidate_with_time():
 
 def test_consolidate_with_invalid_time():
     """ Tests daops utils.consolidate.
-        Test when and invalid time range is passed as a kwarg."""
+        Test when an invalid time range is passed as a kwarg."""
     pass
 
 
@@ -194,13 +194,16 @@ def test_ResultSet_add():
     pass
 
 
-def test_dispatch():
-    """ Tests daops processor.dispatch.
-        """
+def test_dispatch(): # can test with different operations
+    """ Tests daops processor.dispatch."""
     pass
 
 
-def test_process():
-    """ Tests daops processor.process.
-            """
+def test_process_serial():
+    """ Tests daops processor.process with mode='serial'"""
+    pass
+
+
+def test_process_other_mode():
+    """ Tests daops processor.process with mode other than 'serial'"""
     pass
