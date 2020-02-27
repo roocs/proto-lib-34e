@@ -5,7 +5,8 @@ import clisops
 
 
 def subset(data_refs, time=None, space=None, level=None,
-           output_dir=None, chunk_rules=None, filenamer=None):
+           data_root_dir=None, output_dir=None,
+           chunk_rules=None, filenamer=None):
     """
     Example:
         data_refs: ("cmip6.ukesm1.r1.gn.tasmax.v20200101",)
@@ -28,7 +29,7 @@ def subset(data_refs, time=None, space=None, level=None,
     :return:
     """
     # Consolidate data inputs so they can be passed to Xarray
-    data_refs = consolidate(data_refs, time=time)
+    data_refs = consolidate(data_refs, time=time, data_root_dir=data_root_dir)
     # Normalise (i.e. "fix") data inputs based on their "character"
     norm_dsets = normalise(data_refs)
 
@@ -53,4 +54,3 @@ def subset(data_refs, time=None, space=None, level=None,
         )
 
     return rs
-

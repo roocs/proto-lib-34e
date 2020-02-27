@@ -43,23 +43,23 @@ def is_characterised(data_refs, require_all=False):
     return resp
 
 
-def _consolidate_data_ref(dref):
+def _consolidate_data_ref(dref, data_root_dir=None):
     if dref[0] == '/':
         return dref
 
-    if dref.find('cmip5') > -1:
-        dref = '/badc/cmip5/data/' + dref.replace('.', '/') + '/*.nc'
+    if dref.find('cmip5') > -1 and data_root_dir is not None:
+        dref = data_root_dir.rstrip('/') + '/' + dref.replace('.', '/') + '/*.nc'
 
     return dref
- 
 
-def consolidate(data_refs, **kwargs):
+
+def consolidate(data_refs, data_root_dir, **kwargs):
     data_refs = _wrap_sequence(data_refs)
     filtered_refs = collections.OrderedDict()
 
     for dref in data_refs:
 
-        consolidated = _consolidate_data_ref(dref)
+        consolidated = _consolidate_data_ref(dref, data_root_dir)
 
         if 'time' in kwargs:
             required_years = set(range(*[int(_.split('-')[0]) for _ in kwargs['time']]))
@@ -71,7 +71,7 @@ def consolidate(data_refs, **kwargs):
             for i, fpath in enumerate(file_paths):
                 print(f'[INFO] File {i}: {fpath}')
                 ds = xr.open_dataset(fpath)
-                 
+
                 found_years = set([int(_) for _ in ds.time.dt.year])
 
                 if required_years.intersection(found_years):
@@ -134,7 +134,7 @@ class Fixer(object):
 
             if post_processor:
                 self.post_processor = (resolve_import(post_processor['func']),
-                                       post_processor.get('args', None) or [], 
+                                       post_processor.get('args', None) or [],
                                        post_processor.get('kwargs', None) or {})
 
 
@@ -181,5 +181,3 @@ class ResultSet(object):
     def add(self, data_ref, result):
         self._results[data_ref] = result
         self.file_paths.append(result)
-
-
