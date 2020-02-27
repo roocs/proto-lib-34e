@@ -1,5 +1,8 @@
 import collections
 import glob
+import os
+import importlib
+import json
 
 import xarray as xr
 
@@ -82,12 +85,68 @@ def consolidate(data_refs, **kwargs):
     return filtered_refs
 
 
+def resolve_import(import_path):
+    """
+    Deconstructs path, imports module and returns callable.
+
+    :param import path: module and function as 'x.y.func' (of any depth)
+    :return: callable.
+    """
+    # Split last item off path
+    func_name, reversed_path = import_path[-1::-1].split('.', 1)
+    ipath = reversed_path[-1::-1]
+
+    # Import module then send the args and kwargs to the function
+    try:
+        module = importlib.import_module(ipath)
+        func = getattr(module, func_name)
+    except Exception as exc:
+        raise ImportError(f'Could not import function from path: {import_path}')
+
+    return func
+
+
+class Fixer(object):
+
+    FIX_DIR = './fixes'
+
+    def __init__(self, ds_id):
+        self.ds_id = ds_id
+        self._lookup_fix()
+
+    def _lookup_fix(self):
+        fix_file = os.path.join(self.FIX_DIR, f'{self.ds_id}.json')
+
+        if not os.path.isfile(fix_file):
+            self.pre_processor = None
+            self.post_processor = None
+        else:
+            content = json.load(fix_file)
+
+            if content['pre_processor']:
+
+                self.pre_processor = content['pre_processor']
+
+
+def open_dataset(ds_id, file_paths):
+    # Wrap xarray open with required args
+
+    fixer = get_fixer(ds_id)
+
+    xr_dset = xr.open_mfdataset(file_paths, preprocess=fixer.pre_processor,
+                                use_cftime=True, combine='by_coords')
+
+
+    return ds
+
+
 def normalise(data_refs):
     print(f'[INFO] Working on data refs: {data_refs}')
     norm_dsets = collections.OrderedDict()
 
     for data_ref, file_paths in data_refs.items():
-        xr_dset = xr.open_mfdataset(file_paths)
+
+        xr_dset = open_dataset(data_ref, file_paths)
         norm_dsets[data_ref] = xr_dset
 
     return norm_dsets

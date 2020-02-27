@@ -1,4 +1,5 @@
-xarray
+# Needed for `use_cftime` argument
+xarray>=0.15
 
 # Testing
 pytest
