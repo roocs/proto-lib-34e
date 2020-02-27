@@ -40,6 +40,7 @@ def general_subset(dset, time=None, space=None, level=None, output_type="netcdf"
     if output_type == 'netcdf':
         output_path = os.path.join(output_dir, 'output.nc')
         result.to_netcdf(output_path)
+
         print(f'[INFO] Wrote output file: {output_path}')
         return output_path
 

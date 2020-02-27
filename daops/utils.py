@@ -93,8 +93,9 @@ def resolve_import(import_path):
     :return: callable.
     """
     # Split last item off path
-    func_name, reversed_path = import_path[-1::-1].split('.', 1)
-    ipath = reversed_path[-1::-1]
+    parts = import_path.split('.')
+    ipath = '.'.join(parts[:-1])
+    func_name = parts[-1]
 
     # Import module then send the args and kwargs to the function
     try:
@@ -120,8 +121,9 @@ class Fixer(object):
         if not os.path.isfile(fix_file):
             self.pre_processor = None
             self.post_processor = None
+
         else:
-            content = json.load(fix_file)
+            content = json.load(open(fix_file))
             pre_processor = content.get('pre_processor', None)
             post_processor = content.get('post_processor', None)
 
@@ -132,13 +134,18 @@ class Fixer(object):
 
             if post_processor:
                 self.post_processor = (resolve_import(post_processor['func']),
-                                       post_processor['args'], post_processor['kwargs'])
+                                       post_processor.get('args', None) or [], 
+                                       post_processor.get('kwargs', None) or {})
 
 
 def open_dataset(ds_id, file_paths):
     # Wrap xarray open with required args
 
     fixer = Fixer(ds_id)
+    if fixer.pre_processor:
+        print(f'[INFO] Loading data with pre_processor: {fixer.pre_processor.__name__}')
+    else:
+        print(f'[INFO] Loading data')
 
     ds = xr.open_mfdataset(file_paths, preprocess=fixer.pre_processor,
                            use_cftime=True, combine='by_coords')

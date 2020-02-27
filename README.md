@@ -45,6 +45,10 @@ export PYTHONWARNINGS=ignore
 
 ```
 pytest -v test
+
+OR (if it fails):
+
+python -m pytest -v test
 ```
 
 ### Test datasets
@@ -54,6 +58,9 @@ Datasets used for testing are:
 ```
 1. cmip5.output1.MOHC.HadGEM2-ES.rcp85.mon.atmos.Amon.r1i1p1.latest.tas
  @CEDA: /badc/cmip5/data/cmip5/output1/MOHC/HadGEM2-ES/rcp85/mon/atmos/Amon/r1i1p1/latest/tas/*.nc
+
+2. cmip5.output1.INM.inmcm4.rcp45.mon.ocean.Omon.r1i1p1.latest.zostoga
+ @CEDA: /badc/cmip5/data/cmip5/output1/INM/inmcm4/rcp45/mon/ocean/Omon/r1i1p1/latest/zostoga
 ```
 
 
