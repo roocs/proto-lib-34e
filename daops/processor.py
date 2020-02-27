@@ -10,7 +10,7 @@ def process(operation, dset, mode='serial', **kwargs):
     op_name = operation.__name__
 
     if mode == 'serial':
-        print(f'Running {op_name} [{mode}]: {dset} with args: {kwargs}')
+        print(f'Running {op_name} [{mode}]: on Dataset with args: {kwargs}')
 
         result = operation(dset, **kwargs)
 #        try:
