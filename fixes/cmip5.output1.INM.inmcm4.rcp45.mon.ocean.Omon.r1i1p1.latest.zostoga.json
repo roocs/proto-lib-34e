@@ -3,10 +3,10 @@
         "args": [
             1
         ],
-        "func": "daops.post_processors.squeeze_dims",
+        "func": "daops.data_utils.squeeze_dims",
         "kwargs": null
     },
     "pre_processor": {
-        "func": "daops.pre_processors.do_nothing"
+        "func": "daops.data_utils.do_nothing"
     }
 }

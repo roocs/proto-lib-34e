@@ -122,20 +122,31 @@ class Fixer(object):
             self.post_processor = None
         else:
             content = json.load(fix_file)
+            pre_processor = content.get('pre_processor', None)
+            post_processor = content.get('post_processor', None)
 
-            if content['pre_processor']:
+            if pre_processor:
+                self.pre_processor = resolve_import(pre_processor['func'])
+            else:
+                self.pre_processor = None
 
-                self.pre_processor = content['pre_processor']
+            if post_processor:
+                self.post_processor = (resolve_import(post_processor['func']),
+                                       post_processor['args'], post_processor['kwargs'])
 
 
 def open_dataset(ds_id, file_paths):
     # Wrap xarray open with required args
 
-    fixer = get_fixer(ds_id)
+    fixer = Fixer(ds_id)
 
-    xr_dset = xr.open_mfdataset(file_paths, preprocess=fixer.pre_processor,
-                                use_cftime=True, combine='by_coords')
+    ds = xr.open_mfdataset(file_paths, preprocess=fixer.pre_processor,
+                           use_cftime=True, combine='by_coords')
 
+    if fixer.post_processor:
+        func, args, kwargs = fixer.post_processor
+        print(f'[INFO] Running post-processing function: {func.__name__}')
+        ds = func(ds, *args, **kwargs)
 
     return ds
 
