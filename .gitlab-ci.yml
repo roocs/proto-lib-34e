@@ -1,0 +1,17 @@
+stages:
+  - test
+
+run-tests:
+  stage: test
+  image: python:3.7
+  before_script:
+    - pip install numpy
+    - pip install six
+    - pip install -r requirements.txt
+    - git clone https://github.com/roocs/mini-esgf-data.git
+    - mkdir -p /badc/
+    - mv mini-esgf-data/test_data/badc/cmip5/ /badc/
+  script:
+    - python -m pytest test
+  only:
+    - pushes
