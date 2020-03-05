@@ -8,8 +8,7 @@ run-tests:
     - pip install numpy
     - pip install six
     - pip install -r requirements.txt
-    - git submodule init
-    - git submodule update
+    - git submodule update --init --recursive
     - mkdir -p /badc/
     - mv mini-esgf-data/test_data/badc/cmip5/ /badc/
   script:
