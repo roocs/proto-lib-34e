@@ -11,4 +11,4 @@ jobs:
         - git submodule update --init --recursive
         - mkdir -p /badc/
         - mv mini-esgf-data/test_data/badc/cmip5/ /badc/
-      script: python -m pytest test
+      script: python -m pytest tests
