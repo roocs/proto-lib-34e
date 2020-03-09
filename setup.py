@@ -5,7 +5,7 @@ from setuptools import setup
 
 
 version = '1.0.0'
-description = 'ROCCS data operations demo library.'
+description = 'ROOCS data operations demo library.'
 long_description = 'Prototype for 34e libraries and interfaces'
 
 requirements = [line.strip() for line in open('requirements.txt')]

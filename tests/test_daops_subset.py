@@ -11,6 +11,11 @@ CMIP5_IDS = [
 ]
 
 
+def setup_module(module):
+    module.CMIP5_ARCHIVE_BASE = 'mini-esgf-data/test_data/badc/cmip5/data'
+
+
+@pytest.mark.skip('Test data not generated yet')
 def test_subset_zostoga_with_fix():
     result = daops.subset(CMIP5_IDS[0],
                           time=('2085-01-01', '2120-12-30'),
@@ -18,12 +23,14 @@ def test_subset_zostoga_with_fix():
                           output_dir='outputs')
     assert result.file_paths == ['outputs/output.nc']
 
+
 def test_subset_t():
     result = daops.subset(CMIP5_IDS[1],
                           time=('2085-01-01', '2120-12-30'),
                           data_root_dir=CMIP5_ARCHIVE_BASE,
                           output_dir='outputs')
     assert result.file_paths == ['outputs/output.nc']
+
 
 @pytest.mark.skip('FAILS with TypeError. Needs fixing!')
 def test_subset_t_y_x():
@@ -33,9 +40,14 @@ def test_subset_t_y_x():
                           data_root_dir=CMIP5_ARCHIVE_BASE,
                           output_dir='outputs')
 
+
 @pytest.mark.skip('FAILS - needs fixing by bringing range into calendar range')
 def test_subset_t_with_invalid_date():
     result = daops.subset(CMIP5_IDS[1],
                           time=('2085-01-01', '2120-12-31'),
                           data_root_dir=CMIP5_ARCHIVE_BASE,
                           output_dir='outputs')
+
+
+def teardown_module(module):
+    module.CMIP5_ARCHIVE_BASE = 'mini-esgf-data/test_data/badc/cmip5/data'
