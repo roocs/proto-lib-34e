@@ -15,6 +15,7 @@ def setup_module(module):
     module.CMIP5_ARCHIVE_BASE = 'mini-esgf-data/test_data/badc/cmip5/data'
 
 
+@pytest.mark.skip('Test data not generated yet')
 def test_subset_zostoga_with_fix():
     result = daops.subset(CMIP5_IDS[0],
                           time=('2085-01-01', '2120-12-30'),
