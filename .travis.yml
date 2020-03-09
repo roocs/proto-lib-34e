@@ -9,4 +9,5 @@ jobs:
       before_script:
         - pip install -r requirements_dev.txt
         - git submodule update --init --recursive
+        - chomd +wrx outputs
       script: python -m pytest tests
