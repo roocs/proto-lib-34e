@@ -173,8 +173,8 @@ def open_dataset(ds_id, file_paths):
                            use_cftime=True, combine='by_coords')
 
     if fixer.post_processor:
-        for process in fixer.post_processor:
-            func, args, kwargs = process
+        for post_process in fixer.post_processor:
+            func, args, kwargs = post_process
             print(f'[INFO] Running post-processing function: {func.__name__}')
             ds = func(ds, *args, **kwargs)
 
