@@ -164,8 +164,8 @@ def open_dataset(ds_id, file_paths):
 
     fixer = Fixer(ds_id)
     if fixer.pre_processor:
-        for pre in fixer.pre_processors:
-            print(f'[INFO] Loading data with pre_processor: {pre.__name__}')
+        for pre_process in fixer.pre_processors:
+            print(f'[INFO] Loading data with pre_processor: {pre_process.__name__}')
     else:
         print(f'[INFO] Loading data')
 
