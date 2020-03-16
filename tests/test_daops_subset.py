@@ -7,7 +7,8 @@ from .common import CMIP5_ARCHIVE_BASE
 
 CMIP5_IDS = [
     'cmip5.output1.INM.inmcm4.rcp45.mon.ocean.Omon.r1i1p1.latest.zostoga',
-    'cmip5.output1.MOHC.HadGEM2-ES.rcp85.mon.atmos.Amon.r1i1p1.latest.tas'
+    'cmip5.output1.MOHC.HadGEM2-ES.rcp85.mon.atmos.Amon.r1i1p1.latest.tas',
+    'cmip5.output1.MOHC.HadGEM2-ES.historical.mon.land.Lmon.r1i1p1.latest.rh'
 ]
 
 
@@ -15,7 +16,6 @@ def setup_module(module):
     module.CMIP5_ARCHIVE_BASE = 'mini-esgf-data/test_data/badc/cmip5/data'
 
 
-@pytest.mark.skip('Test data not generated yet')
 def test_subset_zostoga_with_fix():
     result = daops.subset(CMIP5_IDS[0],
                           time=('2085-01-01', '2120-12-30'),
@@ -27,6 +27,14 @@ def test_subset_zostoga_with_fix():
 def test_subset_t():
     result = daops.subset(CMIP5_IDS[1],
                           time=('2085-01-01', '2120-12-30'),
+                          data_root_dir=CMIP5_ARCHIVE_BASE,
+                          output_dir='outputs')
+    assert result.file_paths == ['outputs/output.nc']
+
+
+def test_subset_t_pre_process_only():
+    result = daops.subset(CMIP5_IDS[2],
+                          time=('1975-01-01', '2002-12-30'),
                           data_root_dir=CMIP5_ARCHIVE_BASE,
                           output_dir='outputs')
     assert result.file_paths == ['outputs/output.nc']

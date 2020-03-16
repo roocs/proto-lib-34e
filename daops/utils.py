@@ -107,6 +107,18 @@ def resolve_import(import_path):
     return func
 
 
+class FuncChainer(object):
+
+    def __init__(self, *funcs):
+        self.funcs = funcs
+
+    def __call__(self, inputs):
+        result = inputs
+        for f in self.funcs[0]:
+            result = f(result)
+        return result
+
+
 class Fixer(object):
 
     FIX_DIR = './fixes'
@@ -121,21 +133,30 @@ class Fixer(object):
         if not os.path.isfile(fix_file):
             self.pre_processor = None
             self.post_processor = None
+            self.pre_processors = ()
 
         else:
             content = json.load(open(fix_file))
-            pre_processor = content.get('pre_processor', None)
-            post_processor = content.get('post_processor', None)
+            pre_processors = content.get('pre_processors', None)
+            post_processors = content.get('post_processors', None)
 
-            if pre_processor:
-                self.pre_processor = resolve_import(pre_processor['func'])
+            if pre_processors:
+                self.pre_processors = []
+                for pre_processor in pre_processors:
+                    self.pre_processors.append(resolve_import(pre_processor['func']))
             else:
-                self.pre_processor = None
+                self.pre_processors = ()
+            self.pre_processor = FuncChainer(self.pre_processors)
 
-            if post_processor:
-                self.post_processor = (resolve_import(post_processor['func']),
-                                       post_processor.get('args', None) or [],
-                                       post_processor.get('kwargs', None) or {})
+            if post_processors:
+                post_process_list = []
+                for post_processor in post_processors:
+                    post_process_list.append((resolve_import(post_processor['func']),
+                                              post_processor.get('args', None) or [],
+                                              post_processor.get('kwargs', None) or {}))
+                self.post_processor = post_process_list
+            else:
+                self.post_processor = ()
 
 
 def open_dataset(ds_id, file_paths):
@@ -143,7 +164,8 @@ def open_dataset(ds_id, file_paths):
 
     fixer = Fixer(ds_id)
     if fixer.pre_processor:
-        print(f'[INFO] Loading data with pre_processor: {fixer.pre_processor.__name__}')
+        for pre in fixer.pre_processors:
+            print(f'[INFO] Loading data with pre_processor: {pre.__name__}')
     else:
         print(f'[INFO] Loading data')
 
@@ -151,9 +173,10 @@ def open_dataset(ds_id, file_paths):
                            use_cftime=True, combine='by_coords')
 
     if fixer.post_processor:
-        func, args, kwargs = fixer.post_processor
-        print(f'[INFO] Running post-processing function: {func.__name__}')
-        ds = func(ds, *args, **kwargs)
+        for process in fixer.post_processor:
+            func, args, kwargs = process
+            print(f'[INFO] Running post-processing function: {func.__name__}')
+            ds = func(ds, *args, **kwargs)
 
     return ds
 
@@ -171,7 +194,6 @@ def normalise(data_refs):
 
 
 class ResultSet(object):
-
 
     def __init__(self, inputs=None):
         self._results = collections.OrderedDict()
