@@ -1,0 +1,19 @@
+{
+    "post_processors": [
+        {
+            "args": null,
+            "func": "tests.test_func_chainer.post_process",
+            "kwargs": {
+                "drop_dims": "lat"
+            }
+        }
+    ],
+
+    "pre_processors": [
+        {
+            "func": "tests.test_func_chainer.pre_process"
+        }
+    ]
+}
+
+

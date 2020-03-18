@@ -109,12 +109,12 @@ def resolve_import(import_path):
 
 class FuncChainer(object):
 
-    def __init__(self, *funcs):
+    def __init__(self, funcs):
         self.funcs = funcs
 
     def __call__(self, inputs):
         result = inputs
-        for f in self.funcs[0]:
+        for f in self.funcs:
             result = f(result)
         return result
 

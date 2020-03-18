@@ -1,0 +1,7 @@
+{
+  "pre_processors": [
+        {
+            "func": "tests.test_func_chainer.pre_process"
+        }
+    ]
+}

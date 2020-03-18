@@ -32,14 +32,6 @@ def test_subset_t():
     assert result.file_paths == ['outputs/output.nc']
 
 
-def test_subset_t_pre_process_only():
-    result = daops.subset(CMIP5_IDS[2],
-                          time=('1975-01-01', '2002-12-30'),
-                          data_root_dir=CMIP5_ARCHIVE_BASE,
-                          output_dir='outputs')
-    assert result.file_paths == ['outputs/output.nc']
-
-
 @pytest.mark.skip('FAILS with TypeError. Needs fixing!')
 def test_subset_t_y_x():
     result = daops.subset(CMIP5_IDS[1],
