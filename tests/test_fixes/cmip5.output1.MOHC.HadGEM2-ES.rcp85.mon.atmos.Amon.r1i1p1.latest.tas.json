@@ -1,17 +1,17 @@
 {
     "post_processors": [
         {
-            "args": null,
-            "func": "tests.test_func_chainer.post_process",
+            "args": [100],
+            "func": "tests.dummy_data_utils.post_processors.change_data",
             "kwargs": {
-                "drop_dims": "lat"
+                "var_id": "tas"
             }
         }
     ],
 
     "pre_processors": [
         {
-            "func": "tests.test_func_chainer.pre_process"
+            "func": "tests.dummy_data_utils.pre_processors.double_lats"
         }
     ]
 }

@@ -1,7 +1,7 @@
 {
   "pre_processors": [
         {
-            "func": "tests.test_func_chainer.pre_process"
+            "func": "tests.dummy_data_utils.pre_processors.change_lat_name"
         }
     ]
 }

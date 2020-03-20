@@ -2,9 +2,11 @@
     "post_processors": [
         {
             "args": null,
-            "func": "tests.test_func_chainer.post_process",
+            "func": "tests.dummy_data_utils.post_processors.update_attrs",
             "kwargs": {
-                "drop_dims": "lev"
+                "var_id": "zostoga",
+                "units": "s",
+                "long_name": "silly"
             }
         }
     ]
