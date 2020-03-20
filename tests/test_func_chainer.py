@@ -42,9 +42,9 @@ def test_post_process_fix_only():
 
 
 def test_pre_process_fix_only():
-    ds = xr.open_mfdataset(CMIP5_FPATHS[0])
+    ds = xr.open_mfdataset(CMIP5_FPATHS[2])
     ds_test = ds.rename({'lat': 'silly_lat'})
-    ds_code = daops.utils.open_dataset(CMIP5_IDS[0], CMIP5_FPATHS[0])
+    ds_code = daops.utils.open_dataset(CMIP5_IDS[2], CMIP5_FPATHS[2])
     assert ds_test.dims == ds_code.dims
 
 
