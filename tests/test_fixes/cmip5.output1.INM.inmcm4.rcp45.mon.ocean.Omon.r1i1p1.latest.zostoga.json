@@ -4,7 +4,6 @@
             "args": null,
             "func": "tests.dummy_data_utils.post_processors.update_attrs",
             "kwargs": {
-                "var_id": "zostoga",
                 "units": "s",
                 "long_name": "silly"
             }

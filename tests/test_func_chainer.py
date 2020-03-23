@@ -11,16 +11,17 @@ CMIP5_IDS = [
     'cmip5.output1.MOHC.HadGEM2-ES.historical.mon.land.Lmon.r1i1p1.latest.rh'
 ]
 
+CMIP5_FPATHS = [
+        CMIP5_ARCHIVE_BASE + '/cmip5/output1/INM/inmcm4/rcp45/mon/ocean/Omon/r1i1p1/latest/zostoga/*.nc',
+        CMIP5_ARCHIVE_BASE + '/cmip5/output1/MOHC/HadGEM2-ES/rcp85/mon/atmos/Amon/r1i1p1/latest/tas/*.nc',
+        CMIP5_ARCHIVE_BASE + '/cmip5/output1/MOHC/HadGEM2-ES/historical/mon/land/Lmon/r1i1p1/latest/rh/*.nc'
+    ]
+
 
 # setup for tests
 def setup_module(module):
     module.CMIP5_ARCHIVE_BASE = 'mini-esgf-data/test_data/badc/cmip5/data'
     daops.utils.Fixer.FIX_DIR = 'tests/test_fixes'
-    module.CMIP5_FPATHS = [
-        CMIP5_ARCHIVE_BASE + '/cmip5/output1/INM/inmcm4/rcp45/mon/ocean/Omon/r1i1p1/latest/zostoga/*.nc',
-        CMIP5_ARCHIVE_BASE + '/cmip5/output1/MOHC/HadGEM2-ES/rcp85/mon/atmos/Amon/r1i1p1/latest/tas/*.nc',
-        CMIP5_ARCHIVE_BASE + '/cmip5/output1/MOHC/HadGEM2-ES/historical/mon/land/Lmon/r1i1p1/latest/rh/*.nc'
-    ]
 
 
 def test_pre_and_post_process_fix():

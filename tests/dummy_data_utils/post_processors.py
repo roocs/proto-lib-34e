@@ -1,3 +1,5 @@
+import clisops
+
 
 def drop_lat(ds, *args, **kwargs):
     ds_drop_lat = ds.drop_dims(*args, **kwargs)
@@ -5,16 +7,15 @@ def drop_lat(ds, *args, **kwargs):
 
 
 def update_attrs(ds, *args, **kwargs):
-    var_id = kwargs["var_id"]
+    var_id = clisops.utils.get_main_variable(ds)
     for key, value in kwargs.items():
-        if key is not "var_id":
-            ds[f'{var_id}'].attrs[f'{key}'] = f'{value}'
+        ds[var_id].attrs[key] = value
     return ds
 
 
 def change_data(ds, *args, **kwargs):
-    var_id = kwargs["var_id"]
-    ds[f'{var_id}'].data = ds[f'{var_id}'].data + args[0]
+    var_id = clisops.utils.get_main_variable(ds)
+    ds[var_id].data = ds[var_id].data + args[0]
     return ds
 
 

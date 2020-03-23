@@ -3,9 +3,7 @@
         {
             "args": [100],
             "func": "tests.dummy_data_utils.post_processors.change_data",
-            "kwargs": {
-                "var_id": "tas"
-            }
+            "kwargs": null
         }
     ],
 
