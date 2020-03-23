@@ -24,10 +24,9 @@ def setup_module(module):
 
 def test_pre_and_post_process_fix():
     ds_test = xr.open_mfdataset(CMIP5_FPATHS[1])
-    ds_test.lat.data = ds_test.lat.data * 2
+    ds_test['tas'].data = ds_test['tas'].data * 2
     ds_test['tas'].data = ds_test['tas'].data + 100
     ds_code = daops.utils.open_dataset(CMIP5_IDS[1], CMIP5_FPATHS[1])
-    assert (ds_test.lat.data == ds_code.lat.data).all
     assert (ds_test.tas.values == ds_code.tas.values).all
 
 

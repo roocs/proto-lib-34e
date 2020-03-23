@@ -9,7 +9,7 @@
 
     "pre_processors": [
         {
-            "func": "tests.dummy_data_utils.pre_processors.double_lats"
+            "func": "tests.dummy_data_utils.pre_processors.double_array"
         }
     ]
 }
